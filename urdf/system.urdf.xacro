@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="KR10_inspector" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Import the kr10 xacro model -->
+    <xacro:include filename="$(find kr10_r1100_2_urdf)/urdf/kr10_r1100_2_urdf.urdf.xacro" />
+    
+    <!-- Import the ut horizontal end effector xacro model -->
+    <xacro:include filename="$(find ut_horiz_urdf)/urdf/ut_horiz.urdf.xacro"/>
+    
+    <!-- Instantiate the kr10 robot with prefix - this will create kr10_world -->
+<!--     <xacro:kr10_r1100_2 prefix="kr10"/> -->
+    
+    <!-- Instantiate the ut_horiz end effector with prefix--> 
+    <xacro:ut_horiz prefix="ut_horiz"/> 
+
+    <link name="tool_center_point">
+      <visual>
+        <geometry>
+          <sphere radius="0.005"/>
+        </geometry>
+        <material name=""/>
+          <color rgba="0.0196078431372549 0.0196078431372549 0.0196078431372549 1" />
+      </visual>
+
+      <inertial>
+        <mass value="0.001"/>
+        <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+      </inertial>
+      
+      <collision>
+        <geometry>
+          <sphere radius="0.005"/>
+        </geometry>
+      </collision>
+    </link>
+    
+    <!-- kr10 to end_effector connection--> 
+    <joint name="kr10_endeffector_joint" type="fixed">
+        <parent link="link_6"/>
+        <child link="ut_horiz_link"/>
+        <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
+    </joint> 
+
+    <!-- end_effector to TCP -->
+    <joint name="tool_center_joint" type="fixed">
+      <parent link="link_6"/>
+      <child link="tool_center_point"/>
+      <origin xyz="0 -0.02 0.245" rpy="0 0 0"/>
+    </joint>
+
+</robot>
