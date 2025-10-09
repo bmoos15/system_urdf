@@ -1,16 +1,36 @@
 <?xml version="1.0"?>
 <robot name="KR10_inspector" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Load the entire YAML file once -->
+    <xacro:property name="params" value="${xacro.load_yaml('$(find peak_ros)/config/beccas.yaml')}"/>
+    
+    <!-- Access nested properties from the loaded YAML -->
+    <xacro:property name="n_focals" value="${params['boundary_conditions']['n_focals']}"/>
+    <xacro:property name="element_pitch" value="${params['boundary_conditions']['element_pitch']}"/>
+
     <!-- Import the kr10 xacro model -->
     <xacro:include filename="$(find kr10_r1100_2_urdf)/urdf/kr10_r1100_2_urdf.urdf.xacro" />
     
     <!-- Import the ut horizontal end effector xacro model -->
-    <xacro:include filename="$(find ut_horiz_urdf)/urdf/ut_horiz.urdf.xacro"/>
+    <xacro:include filename="$(find probe_mount2)/urdf/probe_mount2.urdf.xacro"/>
+
+    <!-- Import the first coupling plate xacro -->
+    <xacro:include filename="$(find coupling1_urdf)/urdf/coupling1.urdf.xacro"/>
+
+    <!-- Import the ft sensor xacro -->
+    <xacro:include filename="$(find ft_sensor_urdf)/urdf/ft_sensor.urdf.xacro"/>
     
+    <!-- Import the second coupling plate xacro -->
+    <xacro:include filename="$(find coupling2_urdf)/urdf/coupling2.urdf.xacro"/>
+
+    <!-- Import the third coupling plate xacro -->
+    <xacro:include filename="$(find ee_urdf)/urdf/coupling3.urdf.xacro"/>
+
     <!-- Instantiate the kr10 robot with prefix - this will create kr10_world -->
 <!--     <xacro:kr10_r1100_2 prefix="kr10"/> -->
     
     <!-- Instantiate the ut_horiz end effector with prefix--> 
-    <xacro:ut_horiz prefix="ut_horiz"/> 
+    <!-- <xacro:ut_horiz prefix="ut_horiz"/>  -->
 
     <link name="tool_center_point">
       <visual>
@@ -33,18 +53,49 @@
       </collision>
     </link>
     
-    <!-- kr10 to end_effector connection--> 
-    <joint name="kr10_endeffector_joint" type="fixed">
+    <!-- connect the pieces -->
+
+    <!-- kr10 to first coupling plate connection--> 
+    <joint name="kr10_coupling1_joint" type="fixed">
         <parent link="link_6"/>
-        <child link="ut_horiz_link"/>
-        <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
+        <child link="link_coupling1"/>
+        <origin xyz="0 0 .02" rpy="${-pi/2} 0 0"/>
+    </joint> 
+
+    <!-- kr10 to end_effector connection--> 
+    <joint name="coupling1_coupling2" type="fixed">
+        <parent link="link_coupling1"/>
+        <child link="link_coupling2"/>
+        <origin xyz="0 0.005 0" rpy="0 0 0"/>
+    </joint> 
+
+    <!-- kr10 to end_effector connection--> 
+    <joint name="coupling2_ft_joint" type="fixed">
+        <parent link="link_coupling2"/>
+        <child link="ft_sensor"/>
+        <origin xyz="0 0 0" rpy="${-pi} 0 0"/>
+    </joint> 
+
+    <!-- plate 3 to end_effector connection--> 
+    <joint name="kr10_endeffector_joint" type="fixed">
+        <parent link="ft_sensor"/>
+        <child link="link_ee"/>
+        <origin xyz="0 0.0435 0" rpy="${pi} 0 0"/>
+    </joint> 
+
+    <!-- kr10 to end_effector connection--> 
+    <joint name="endeffector_utprobe_joint" type="fixed">
+        <parent link="link_ee"/>
+        <child link="probe_mount"/>
+        <origin xyz="0 0 0" rpy="${-pi/2} ${-pi/2} 0"/>
     </joint> 
 
     <!-- end_effector to TCP -->
     <joint name="tool_center_joint" type="fixed">
-      <parent link="link_6"/>
+      <parent link="probe_mount"/>
       <child link="tool_center_point"/>
-      <origin xyz="0 -0.02 0.245" rpy="0 0 0"/>
+      <origin xyz="${(n_focals * element_pitch / (2 * 1000)) - (49 * element_pitch / (2 *1000))} 0 -0.245" rpy="${pi} 0 ${pi/2}"/>
+      <!--  old x and y: 0 -0.02 -->
     </joint>
 
 </robot>
