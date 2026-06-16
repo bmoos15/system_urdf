@@ -20,19 +20,16 @@
     <xacro:include filename="kr10_r1100_2_urdf.urdf.xacro" />
     
     <!-- Import the ut horizontal end effector xacro model -->
-    <xacro:include filename="$(find probe_mount2)/urdf/probe_mount2.urdf.xacro"/>
+    <xacro:include filename="probe_mount2.urdf.xacro"/>
 
-    <!-- Import the first coupling plate xacro -->
-    <!-- <xacro:include filename="$(find coupling1_urdf)/urdf/coupling1.urdf.xacro"/> -->
+    <!-- Import the roller probe components xacro (separated to allow removal of any piece) -->
+    <xacro:include filename="coupling1.urdf.xacro"/>
+    <xacro:include filename="ft_sensor.urdf.xacro"/>
+    <xacro:include filename="coupling2.urdf.xacro"/>
+    <xacro:include filename="coupling3.urdf.xacro"/>
+    <xacro:include filename="extender.urdf.xacro" />
 
-    <!-- Import the ft sensor xacro -->
-    <!-- <xacro:include filename="$(find ft_sensor_urdf)/urdf/ft_sensor.urdf.xacro"/> -->
-    
-    <!-- Import the second coupling plate xacro -->
-    <!-- <xacro:include filename="$(find coupling2_urdf)/urdf/coupling2.urdf.xacro"/> -->
 
-    <!-- Import the third coupling plate xacro -->
-    <!-- <xacro:include filename="$(find ee_urdf)/urdf/coupling3.urdf.xacro"/> -->
 
     <!-- ====================================================================================== -->
                                <!-- Add the tool center point  -->
@@ -62,43 +59,52 @@
     <!-- connect the pieces -->
 
     <!-- ========================================================================================= -->
-    <!--                                Beginning of 7.14 Configuration                            -->
+    <!--                   Beginning of extra  roller probe pieces Configuration                   -->
     <!-- ========================================================================================= -->
 
     <!-- kr10 to first coupling plate connection--> 
-<!--     <joint name="kr10_coupling1_joint" type="fixed">
+    <joint name="kr10_coupling1_joint" type="fixed">
         <parent link="link_6"/>
         <child link="link_coupling1"/>
         <origin xyz="0 0 .02" rpy="${-pi/2} 0 0"/>
-    </joint>  -->
+    </joint> 
 
-    <!-- kr10 to end_effector connection--> 
-<!--     <joint name="coupling1_coupling2" type="fixed">
+    <!-- first coupling plate to ft_sensor--> 
+    <joint name="coupling1_coupling2" type="fixed">
         <parent link="link_coupling1"/>
         <child link="link_coupling2"/>
         <origin xyz="0 0.005 0" rpy="0 0 0"/>
-    </joint>  -->
+    </joint> 
 
-    <!-- kr10 to end_effector connection--> 
-<!--     <joint name="coupling2_ft_joint" type="fixed">
+    <!-- ft_sensor to coupling plate 2--> 
+    <joint name="coupling2_ft_joint" type="fixed">
         <parent link="link_coupling2"/>
-        <child link="ft_sensor"/>
+        <child link="link_ft_sensor"/>
         <origin xyz="0 0 0" rpy="${-pi} 0 0"/>
-    </joint>  -->
+    </joint> 
 
-    <!-- plate 3 to end_effector connection--> 
-<!--     <joint name="kr10_endeffector_joint" type="fixed">
-        <parent link="ft_sensor"/>
-        <child link="link_ee"/>
+    <!-- coupling plate 2 to end effector connection--> 
+    <joint name="ft_coupling3_joint" type="fixed">
+        <parent link="link_ft_sensor"/>
+        <child link="link_coupling3"/>
         <origin xyz="0 0.0435 0" rpy="${pi} 0 0"/>
-    </joint>  -->
+    </joint> 
 
-    <!-- kr10 to end_effector connection--> 
-<!--     <joint name="endeffector_utprobe_joint" type="fixed">
-        <parent link="link_ee"/>
-        <child link="probe_mount"/>
-        <origin xyz="0 0 0" rpy="${-pi/2} ${-pi/2} 0"/>
-    </joint>  -->
+    <!-- coupling3 to extender connection--> 
+    <joint name="coupling3_extender_joint" type="fixed">
+        <parent link="link_coupling3"/>
+        <child link="link_extender"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint> 
+
+    <!-- --> 
+    <joint name="extender_probe_joint" type="fixed">
+        <parent link="link_extender"/>
+        <child link="link_probe"/>
+        <origin xyz="0 -0.05 0" rpy="${-pi/2} ${-pi/2} 0"/>
+    </joint> 
+
+
 
     <!-- ========================================================================================= -->
     <!--                                   End of 7.14 Configuration                               -->
@@ -109,27 +115,20 @@
     <!-- ========================================================================================= -->
 
 <!-- kr10 to Probe mount -->
-
+<!-- 
     <joint name="link_6_ut_probe_joint" type="fixed">
       <parent link="link_6"/>
       <child link="probe_mount"/>
       <origin xyz="0 0 0" rpy="${pi} 0 0"/>
-    </joint>
+    </joint> -->
 
     <!-- ========================================================================================= -->
     <!--                                       Same for Both                                       -->
     <!-- ========================================================================================= -->
 
-    <!-- end_effector to TCP for whole system -->
-<!--     <joint name="tool_center_joint" type="fixed">
-      <parent link="probe_mount"/>
-      <child link="tool_center_point"/>
-      <origin xyz="0.0125 ${-(n_focals * element_pitch / (2 * 1000)) + (64 * element_pitch / (2 *1000))} -0.245" rpy="${pi} 0 ${pi/2}"/>
-    </joint>
- -->
     <!-- end_effector to TCP -->
     <joint name="tool_center_joint" type="fixed">
-      <parent link="probe_mount"/>
+      <parent link="link_probe"/>
       <child link="tool_center_point"/>
       <origin xyz="0.0125 ${-(n_focals * element_pitch / (2 * 1000)) + (64 * element_pitch / (2 *1000))} -0.245" rpy="${pi} 0 ${pi/2}"/>
     </joint>

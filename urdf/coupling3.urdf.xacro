@@ -3,23 +3,23 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="probe_mount2"
+  name="ee"
   xmlns:xacro="http://www.ros.org/wiki/xacro">
   <link
-    name="link_probe">
+    name="link_coupling3">
     <inertial>
       <origin
-        xyz="0.0172095025438958 -0.0934181562801906 0.000471391183381434"
+        xyz="-2.13510948500582E-07 -1.82970595220083E-06 -0.00768363431196126"
         rpy="0 0 0" />
       <mass
-        value="0.275178819498116" />
+        value="0.0384214421870518" />
       <inertia
-        ixx="0.00158144645389415"
-        ixy="9.09904679448213E-05"
-        ixz="-2.74539325678678E-06"
-        iyy="0.000168425924534353"
-        iyz="3.76040071661897E-05"
-        izz="0.00150104046709865" />
+        ixx="1.44308944749129E-05"
+        ixy="1.10001208358471E-10"
+        ixz="6.16955726898917E-11"
+        iyy="1.44318430502768E-05"
+        iyz="5.28407477246946E-10"
+        izz="2.80517055222733E-05" />
     </inertial>
     <visual>
       <origin
@@ -27,12 +27,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://system_urdf/meshes/probe_mount/probe_mount.STL" />
+          filename="package://system_urdf/meshes/roller_probe_pieces/coupling3.STL" />
       </geometry>
       <material
         name="">
         <color
-          rgba="0.0196078431372549 0.0196078431372549 0.0196078431372549 1" />
+          rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
       </material>
     </visual>
     <collision>
@@ -41,7 +41,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://system_urdf/meshes/probe_mount/probe_mount.STL" />
+          filename="package://system_urdf/meshes/roller_probe_pieces/coupling3.STL" />
       </geometry>
     </collision>
   </link>
