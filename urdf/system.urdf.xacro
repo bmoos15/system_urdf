@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot name="KR10_inspector" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <!-- ===================================================================================== -->
+    <!--      Import variables for calculating TCP location based on number of focal laws      -->
+    <!-- ===================================================================================== -->
+
     <!-- Load the entire YAML file once -->
     <xacro:property name="params" value="${xacro.load_yaml('$(find peak_ros)/config/beccas.yaml')}"/>
     
@@ -8,8 +12,12 @@
     <xacro:property name="n_focals" value="${params['boundary_conditions']['n_focals']}"/>
     <xacro:property name="element_pitch" value="${params['boundary_conditions']['element_pitch']}"/>
 
+    <!-- ======================================================================================= -->
+    <!--                                Import the urdfs                                         -->
+    <!-- ======================================================================================= -->
+
     <!-- Import the kr10 xacro model -->
-    <xacro:include filename="$(find kr10_r1100_2_urdf)/urdf/kr10_r1100_2_urdf.urdf.xacro" />
+    <xacro:include filename="kr10_r1100_2_urdf.urdf.xacro" />
     
     <!-- Import the ut horizontal end effector xacro model -->
     <xacro:include filename="$(find probe_mount2)/urdf/probe_mount2.urdf.xacro"/>
@@ -26,11 +34,9 @@
     <!-- Import the third coupling plate xacro -->
     <!-- <xacro:include filename="$(find ee_urdf)/urdf/coupling3.urdf.xacro"/> -->
 
-    <!-- Instantiate the kr10 robot with prefix - this will create kr10_world -->
-<!--     <xacro:kr10_r1100_2 prefix="kr10"/> -->
-    
-    <!-- Instantiate the ut_horiz end effector with prefix--> 
-    <!-- <xacro:ut_horiz prefix="ut_horiz"/>  -->
+    <!-- ====================================================================================== -->
+                               <!-- Add the tool center point  -->
+    <!-- ====================================================================================== -->
 
     <link name="tool_center_point">
       <visual>

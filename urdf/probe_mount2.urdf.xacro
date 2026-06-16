@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="probe_mount2"
+  xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link
+    name="probe_mount">
+    <inertial>
+      <origin
+        xyz="0.0172095025438958 -0.0934181562801906 0.000471391183381434"
+        rpy="0 0 0" />
+      <mass
+        value="0.275178819498116" />
+      <inertia
+        ixx="0.00158144645389415"
+        ixy="9.09904679448213E-05"
+        ixz="-2.74539325678678E-06"
+        iyy="0.000168425924534353"
+        iyz="3.76040071661897E-05"
+        izz="0.00150104046709865" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://probe_mount2/meshes/probe_mount.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.0196078431372549 0.0196078431372549 0.0196078431372549 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://probe_mount2/meshes/probe_mount.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>
